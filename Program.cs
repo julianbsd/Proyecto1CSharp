@@ -17,7 +17,7 @@ class Program
     {
         const int MAX_TESLAS = 100;
         Tesla[] teslas = new Tesla[MAX_TESLAS];
-        int num_teslas = 0;
+        int numTeslas = 0;
 
         while (true)
         {
@@ -34,8 +34,9 @@ class Program
 
             switch (opcion)
             {
+                // Se le pide al usuario todos los parametros del Tesla y se da de alta. 
                 case 1:
-                    if (num_teslas < MAX_TESLAS)
+                    if (numTeslas < MAX_TESLAS)
                     {
                         Console.Write("Ingrese el modelo del Tesla: ");
                         string modelo = Console.ReadLine() ?? "";
@@ -66,8 +67,8 @@ class Program
                         else
                             auto.tuvoService = false;
 
-                        teslas[num_teslas] = auto;
-                        num_teslas++;
+                        teslas[numTeslas] = auto;
+                        numTeslas++;
                         Console.WriteLine("El Tesla se dio de alta exitosamente.\n");
                     }
                     else
@@ -75,21 +76,26 @@ class Program
                         Console.WriteLine("No se pueden agregar mas Teslas.\n");
                     }
                     break;
+                
 
+                // Se le pide al usuario el nombre del dueño del Tesla, recorre el array y si lo encuentra se elimina
                 case 2:
                     Console.Write("Ingrese el duenio del Tesla que desea eliminar: ");
-                    string autoAEliminar = Console.ReadLine() ?? "";
+                    string duenioTesla = Console.ReadLine() ?? "";
+
                     bool encontrado = false;
-                    for (int auto = 0; auto < num_teslas; auto++)
+
+                    for (int auto = 0; auto < numTeslas; auto++)
                     {
-                        if (teslas[auto].duenio == autoAEliminar)
+                        if (teslas[auto].duenio == duenioTesla)
                         {
-                            for (int numAuto = auto; numAuto < num_teslas - 1; numAuto++)
+                            // Se reorganiza el array para eliminar el Tesla encontrado
+                            for (int indexAuto = auto; indexAuto < numTeslas - 1; indexAuto++)
                             {
-                                teslas[numAuto] = teslas[numAuto + 1];
+                                teslas[indexAuto] = teslas[indexAuto + 1];
                             }
-                            num_teslas--;
                             encontrado = true;
+                            numTeslas--;
                             Console.WriteLine("El Tesla se eliminó exitosamente.\n");
                             break;
                         }
@@ -100,12 +106,14 @@ class Program
                     }
                     break;
 
+
+                // Busca si hay algun auto que tuvo service y muestra los datos
                 case 3:
                     Console.WriteLine("Lista de Teslas que tuvieron service:");
+
                     bool serviceEncontrado = false;
 
-                    // Si hay algun auto que tuvo service muestra los datos
-                    for (int auto = 0; auto < num_teslas; auto++)
+                    for (int auto = 0; auto < numTeslas; auto++)
                     {
                         if (teslas[auto].tuvoService)
                         {
@@ -123,55 +131,52 @@ class Program
                     }
 
                     break;
-            }
 
-                //case 4:
-                //    for (int auto = 0; auto < num_teslas - 1; auto++)
+                // case 4:
+                //    for (int auto = 0; auto < numTeslas - 1; auto++)
                 //    {
-                //        for (int numAuto = auto + 1; numAuto < num_teslas; numAuto++)
+                //        for (int indexAuto = auto + 1; indexAuto < numTeslas; indexAuto++)
                 //        {
-                //            if (teslas[auto].anio > teslas[numAuto].anio)
+                //            if (teslas[auto].anio > teslas[indexAuto].anio)
                 //            {
                 //                Tesla temp = teslas[auto];
-                //                teslas[auto] = teslas[numAuto];
-                //                teslas[numAuto] = temp;
+                //                teslas[auto] = teslas[indexAuto];
+                //                teslas[indexAuto] = temp;
                 //            }
                 //        }
                 //    }
                 //    Console.WriteLine("La lista de Teslas se ordenó por año.");
                 //    break;
 
-            //    case 5:
-            //        int max_ano = -1;
-            //        int index_max_ano = -1;
-            //        for (int i = 0; i < num_teslas; i++)
-            //        {
-            //            if (anos[i] > max_ano)
-            //            {
-            //                max_ano = anos[i];
-            //                index_max_ano = i;
-            //            }
-            //        }
+                // case 5:
+                //        int maxAnio = -1;
+                //        int indexMaxAnio = -1;
+                //        for (int auto = 0; auto < numTeslas; auto++)
+                //        {
+                //            if (anos[i] > max_ano)
+                //            {
+                //                max_ano = anos[i];
+                //                index_max_ano = i;
+                //            }
+                //        }
 
-            //        if (index_max_ano >= 0)
-            //        {
-            //            Console.WriteLine("El Tesla mas nuevo es el modelo {0} del año {1}.", modelos[index_max_ano], anos[index_max_ano]);
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("No hay Tesla dados de alta.");
-            //        }
+                //        if (index_max_ano >= 0)
+                //        {
+                //            Console.WriteLine("El Tesla mas nuevo es el modelo {0} del año {1}.", modelos[index_max_ano], anos[index_max_ano]);
+                //        }
+                //        else
+                //        {
+                //            Console.WriteLine("No hay Tesla dados de alta.");
+                //        }
 
-            //        Console.WriteLine();
+                case 6:
+                    Console.WriteLine("Hasta luego!\n");
+                    return;
 
-            //    case 6:
-            //        Console.WriteLine("Hasta luego!");
-            //        return;
-
-            //    default:
-            //        Console.WriteLine("Opcion invalida.");
-            //        break;
-            //}
+                default:
+                    Console.WriteLine("Opcion invalida.\n");
+                    break;
+            }
         }
     }
 }
