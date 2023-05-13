@@ -31,21 +31,22 @@ namespace ProgramaTeslas
                 Console.WriteLine("1 - Dar de alta un Tesla");
                 Console.WriteLine("2 - Eliminar un Tesla");
                 Console.WriteLine("3 - Mostrar Teslas que tuvieron service");
-                Console.WriteLine("4 - Reordenar lista de Teslas por anio");
-                Console.WriteLine("5 - Mostrar el Tesla mas nuevo");
-                Console.WriteLine("6 - Salir");
+                Console.WriteLine("4 - Mostrar todos los Teslas dados de alta");
+                Console.WriteLine("5 - Reordenar lista de Teslas por anio");
+                Console.WriteLine("6 - Mostrar el Tesla mas nuevo");
+                Console.WriteLine("7 - Salir");
                 Console.Write("Opcion: ");
                 int opcion = int.Parse(Console.ReadLine() ?? "");
                 Console.WriteLine();
 
                 switch (opcion)
                 {
-                    // Se le pide al usuario todas las propiedades del Tesla y se da de alta. 
+                    // Se le pide al usuario todos los datos del Tesla y se da de alta. 
                     case 1:
                         if (numTeslas < MAX_TESLAS)
                         {
                             Console.Write("Ingrese el modelo del Tesla: ");
-                            string modelo = Console.ReadLine() ?? ""; // Se le da un valor default a las variables con ReadLines para evitar las warnings de posible null
+                            string modelo = Console.ReadLine() ?? ""; // (?? "") Se le da un valor default a las variables para evitar las warnings de posible null por ReadLine
                             Console.Write("Ingrese el anio del Tesla: ");
                             int anio = int.Parse(Console.ReadLine() ?? "");
                             Console.Write("Ingrese el kilometraje actual: ");
@@ -54,8 +55,6 @@ namespace ProgramaTeslas
                             string color = Console.ReadLine() ?? "";
                             Console.Write("Ingrese el duenio del Tesla: ");
                             string duenio = Console.ReadLine() ?? "";
-                            //Console.Write("El auto tuvo service? (s/n): ");
-                            //char tuvoService = char.Parse(Console.ReadLine() ?? "");
 
 
                             Tesla auto = new Tesla();
@@ -65,7 +64,7 @@ namespace ProgramaTeslas
                             auto.color = color;
                             auto.duenio = duenio;
 
-                            // Se compara el kilometraje actual con el kilometraje de service, y se 
+                            // Se define la propiedad tuvoService comparando el kilometraje actual con la constante kilometrajeService
                             if (auto.kilometrajeActual >= kilometrajeService)
                             {
                                 auto.tuvoService = true;
@@ -74,27 +73,20 @@ namespace ProgramaTeslas
                             {
                                 auto.tuvoService = false;
                             }
-                            //if (char.ToLower(tuvoService) == 's')
-                            //{
-                            //    auto.tuvoService = true;
-                            //    Console.Write("Ingrese el kilometraje de service: ");
-                            //    auto.kilometrajeService = int.Parse(Console.ReadLine() ?? "");
-                            //}
-                            //else
-                            //    auto.tuvoService = false;
 
                             teslas[numTeslas] = auto;
                             numTeslas++;
-                            Console.WriteLine("El Tesla se dio de alta exitosamente.\n");
+                            Console.WriteLine("\nEl Tesla se dio de alta exitosamente.\n");
                         }
                         else
                         {
-                            Console.WriteLine("No se pueden agregar mas Teslas.\n");
+                            Console.WriteLine("\nNo se pueden agregar mas Teslas.\n");
                         }
+
                         break;
 
 
-                    // Se le pide al usuario el nombre del duenio del Tesla, recorre el array y si lo encuentra se elimina
+                    // Se le pide al usuario el nombre del duenio del Tesla, y si lo encuentra se elimina
                     case 2:
                         Console.Write("Ingrese el duenio del Tesla que desea eliminar: ");
                         string duenioTesla = Console.ReadLine() ?? "";
@@ -106,26 +98,31 @@ namespace ProgramaTeslas
                             if (teslas[auto].duenio == duenioTesla)
                             {
                                 // Se reorganiza el array para eliminar el Tesla encontrado
-                                for (int indexAuto = auto; indexAuto < numTeslas - 1; indexAuto++)
+                                for (int index2doAuto = auto; index2doAuto < numTeslas - 1; index2doAuto++)
                                 {
-                                    teslas[indexAuto] = teslas[indexAuto + 1];
+                                    teslas[index2doAuto] = teslas[index2doAuto + 1];
                                 }
+
                                 encontrado = true;
                                 numTeslas--;
+
                                 Console.WriteLine("El Tesla se elimino exitosamente.\n");
+
                                 break;
                             }
                         }
+
                         if (!encontrado)
                         {
                             Console.WriteLine("El Tesla no se encontro.\n");
                         }
+
                         break;
 
 
-                    // Busca si hay algun auto que tuvo service y muestra los datos
+                    // Busca los Teslas que tuvieron service y muestra los datos
                     case 3:
-                        Console.WriteLine("Lista de Teslas que tuvieron service:");
+                        Console.WriteLine("Lista de Teslas que tuvieron service:\n");
 
                         bool serviceEncontrado = false;
 
@@ -137,6 +134,7 @@ namespace ProgramaTeslas
                                     $"Anio: {teslas[auto].anio}\n" +
                                     $"Dueño: {teslas[auto].duenio}\n" +
                                     $"Kilometraje actual: {teslas[auto].kilometrajeActual}\n");
+
                                 serviceEncontrado = true;
                             }
                         }
@@ -149,26 +147,51 @@ namespace ProgramaTeslas
                         break;
 
 
-                    // Reordena la lista por anio del mas viejo al mas nuevo
+                    // Muestra todos los Teslas, independientemente de si tuvieron service o no
                     case 4:
+                        Console.WriteLine("Listado de todos los Teslas dados de alta:\n");
+
+                        if (numTeslas > 0)
+                        {
+                            for (int auto = 0; auto < numTeslas; auto++)
+                            {
+                                Console.WriteLine($"Modelo: {teslas[auto].modelo}\n" +
+                                    $"Anio: {teslas[auto].anio}\n" +
+                                    $"Dueño: {teslas[auto].duenio}\n" +
+                                    $"Kilometraje actual: {teslas[auto].kilometrajeActual}\n");
+                            }
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("No hay Teslas dados de alta.\n");
+                        }
+
+                        break;
+
+
+                    // Reordena el array de Teslas por anio del mas viejo al mas nuevo
+                    case 5:
                         for (int auto = 0; auto < numTeslas - 1; auto++)
                         {
-                            for (int indexAuto = auto + 1; indexAuto < numTeslas; indexAuto++)
+                            for (int index2doAuto = auto + 1; index2doAuto < numTeslas; index2doAuto++)
                             {
-                                if (teslas[auto].anio > teslas[indexAuto].anio)
+                                if (teslas[auto].anio > teslas[index2doAuto].anio)
                                 {
                                     Tesla temp = teslas[auto];
-                                    teslas[auto] = teslas[indexAuto];
-                                    teslas[indexAuto] = temp;
+                                    teslas[auto] = teslas[index2doAuto];
+                                    teslas[index2doAuto] = temp;
                                 }
                             }
                         }
+
                         Console.WriteLine("La lista de Teslas se ordeno por anio.\n");
+
                         break;
 
 
                     // Busca el Tesla con el anio mayor en el array y lo muestra
-                    case 5:
+                    case 6:
                         int maxAnio = -1;
                         int indexMaxAnio = -1;
 
@@ -181,7 +204,7 @@ namespace ProgramaTeslas
                             }
                         }
 
-                        if (indexMaxAnio > 0)
+                        if (indexMaxAnio != -1)
                         {
                             Console.WriteLine($"El Tesla mas nuevo es el modelo {teslas[indexMaxAnio].modelo} " +
                                 $"del anio {teslas[indexMaxAnio].anio}.\n" +
@@ -191,11 +214,14 @@ namespace ProgramaTeslas
                         {
                             Console.WriteLine("No hay Teslas dados de alta.\n");
                         }
+
                         break;
 
-                    case 6:
+
+                    case 7:
                         Console.WriteLine("Hasta luego!\n");
                         return;
+
 
                     default:
                         Console.WriteLine("Opcion invalida.\n");
